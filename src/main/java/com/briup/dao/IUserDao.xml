@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.dao.IUserDao">
+    <!--
+    id
+    address
+    e_mail
+    is_lock
+    login_name
+    nick_name
+    password_md5
+    phone
+
+    private Long id;
+    private String nickName;
+    private String loginName;
+    private String passwordMd5;
+    private String phone;
+    private String eMail;
+    private String address;
+    private  boolean isLock;
+    private List<ShippingAddress> addresses;
+    -->
+
+    <resultMap id="UserResult" type="User">
+        <id property="id" column="id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="loginName" column="login_name"/>
+        <result property="passwordMd5" column="password_md5"/>
+        <result property="phone" column="phone"/>
+        <result property="eMail" column="e_mail"/>
+        <result property="address" column="address"/>
+        <result property="isLock" column="is_lock"/>
+        <collection property="addresses" resultMap="ShippingAddressResult"/>
+    </resultMap>
+
+    <!--
+        id
+        address
+        phone_num
+        user_id
+        default_value
+        name
+
+        private Long id;
+        private String name;
+        private String address;
+        private String phoneNum;
+        private boolean defaultValue;
+        private User user;
+    -->
+    <resultMap id="ShippingAddressResult" type="ShippingAddress">
+        <id property="id" column="sid"/>
+        <result property="name" column="name"/>
+        <result property="address" column="saddress"/>
+        <result property="phoneNum" column="phone_num"/>
+        <result property="defaultValue" column="default_value"/>
+    </resultMap>
+
+    <select id="findByLoginName" resultMap="UserResult">
+        select u.id, u.address, u.e_mail, u.is_lock, u.login_name, u.nick_name, u.password_md5, u.phone,
+               a.id sid, a.address saddress, a.phone_num, a.default_value, a.name
+        from
+            t_user u
+        left outer join
+            t_shipping_address a
+        on
+            u.id = a.user_id
+        where
+            login_name = #{loginName}
+    </select>
+
+    <!--添加新用户-->
+    <insert id="saveUser" parameterType="User">
+        insert into t_user(address, e_mail, is_lock, login_name, nick_name, password_md5, phone)
+        values (#{address}, #{eMail}, #{isLock}, #{loginName}, #{nickName}, #{passwordMd5}, #{phone})
+    </insert>
+
+    <!--查询用户-->
+    <select id="findByUNP" resultMap="UserResult">
+        select id, address, e_mail, is_lock, login_name, nick_name, password_md5, phone
+        from t_user
+        where login_name = #{loginName} and password_md5 = #{passwordMd5}
+    </select>
+
+</mapper>

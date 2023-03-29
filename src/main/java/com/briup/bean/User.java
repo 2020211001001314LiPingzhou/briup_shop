@@ -18,4 +18,5 @@ public class User {
     private String address;
     private  boolean isLock;
     private List<ShippingAddress> addresses;
+
 }

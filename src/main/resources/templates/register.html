@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
 	<title>briup-电子商务-注册</title>
+	<base th:href="${#request.getScheme()+'://'+#request.getServerName()+':'+#request.getServerPort()+#request.getContextPath()+'/'}">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -20,7 +21,7 @@
 		
 		<div class="reg_box col-md-7 column">
 			<h1>用户注册<span class="glyphicon glyphicon-hand-right">&nbsp;已经有账号<a href="/toLogin">去登录</a></span></h1>
-			<form action="register" class="form-horizontal" role="from" method="post" onsubmit="return checkReg()">
+			<form action="user/register" class="form-horizontal" role="from" method="post" onsubmit="return checkReg()">
 
 				<div class="form-group" th:if="${msg!=null}">
 					<p style="color: red" th:text="${msg}">error message</p>
