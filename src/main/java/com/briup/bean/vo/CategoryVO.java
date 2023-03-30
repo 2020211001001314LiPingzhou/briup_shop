@@ -10,8 +10,10 @@ public class CategoryVO {
     private List<Category> categories;
 
     public CategoryVO(Category category, List<Category> categories) {
+        // 一级类别
         this.id=category.getId();
         this.name=category.getName();
+        // 该一级类别下的二级类别
         this.categories=categories;
 
     }

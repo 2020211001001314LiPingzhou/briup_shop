@@ -3,6 +3,7 @@ package com.briup.dao;
 import com.briup.bean.Shop;
 
 import java.util.List;
+
 public interface IShopDao{
     void updateSalesVolume(Long shopId,Long salesVolume);
     void updateVisitVolume(Long shopId,Long visitVolume);

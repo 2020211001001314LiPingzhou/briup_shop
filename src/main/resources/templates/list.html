@@ -17,8 +17,8 @@
 </a>
 <div class="top" id="top">
     <div class="herf" th:if="${session.user} ==null">
-        <span><a th:href="toLogin" href="login.html">登录</a></span>
-        <span><a th:href="toRegister" href="register.html">注册</a></span>
+        <span><a th:href="'user/toLogin'" href="login.html">登录</a></span>
+        <span><a th:href="'user/toRegister'" href="register.html">注册</a></span>
     </div>
     <div class="herf" th:if="${session.user} !=null">
         <span><a href="index.html" th:href="toIndex">首页</a></span>
@@ -80,7 +80,7 @@
         </ul>
     </div>
     <div class="row book">
-        <div th:each="shop: ${shopList}" class="col-md-3 onebook">
+        <div th:each="shop: ${shopList}" th:if="${shop}" class="col-md-3 onebook">
             <a class="viewShop" th:href="'toViewShop?shopId='+${shop.id}" href="viewShop.html">
                 <img src="images/book_index/book1.jpg" th:src="${shop.img}"/>
                 <h4 th:text="${shop.name}">
@@ -90,7 +90,6 @@
                 <p th:text="${shop.selling_price+'元'}" th:if="${!shop.discount}">45.00元</p>
                 <p th:text="${shop.discountPrice+'元'}" th:if="${shop.discount}">45.00元</p>
             </a>
-
         </div>
     </div>
 

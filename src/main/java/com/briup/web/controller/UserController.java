@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 
@@ -64,14 +65,10 @@ public class UserController {
         <span><a href="user/exit">退出</a></span>*/
 
     @GetMapping("/exit")
-    public String exit(HttpSession session){
-        try {
-            userService.exit(session);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "forward:/index";
+    public String exit(SessionStatus ss){
+        System.out.println("销毁session作用域成功...");
+        ss.setComplete();	//销毁session作用域
+        return "forward:index";
     }
 
 }

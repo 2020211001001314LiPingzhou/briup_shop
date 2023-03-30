@@ -5,6 +5,7 @@ import com.briup.dao.IUserDao;
 import com.briup.service.IUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -58,8 +59,4 @@ public class IUserServiceImpl implements IUserService {
         return userDao.findByLoginName(loginName);
     }
 
-    @Override
-    public void exit(HttpSession session) throws Exception {
-        session.invalidate();
-    }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.dao.IShopDao">
+    <select id="findByCategoryId" resultType="Shop">
+        select
+            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
+            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from t_category c
+        left join t_shop s
+        on c.id = s.category_id
+        where c.id = #{categoryId}
+    </select>
+
+    <select id="findShopById" resultType="Shop">
+        select
+            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
+            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from t_shop s
+        where s.id = #{id}
+    </select>
+
+    <select id="findByNameContaining" resultType="Shop">
+        select
+            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
+            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from t_shop s
+        where s.name like concat('%', #{shopName}, '%')
+    </select>
+
+
+</mapper>

@@ -19,6 +19,4 @@ public interface IUserService {
 
     User findByLoginName(String loginName)throws Exception;
 
-
-    void exit(HttpSession session)throws Exception;
 }

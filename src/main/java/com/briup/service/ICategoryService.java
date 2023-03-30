@@ -5,5 +5,5 @@ import com.briup.bean.vo.CategoryVO;
 import java.util.List;
 
 public interface ICategoryService {
-    List<CategoryVO> findAllCategoey();
+    List<CategoryVO> findAllCategory();
 }
