@@ -36,6 +36,7 @@ public class ShopController {
     @GetMapping("/toViewShop")
     public String toViewShop(Long shopId, Model model){
         Shop shop = shopService.findShopById(shopId);
+        System.out.println("shop =====" + shop);
         model.addAttribute("shop", shop);
         return "viewShop";
     }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.dao.IShopCarDao">
+    <!--
+    id
+    num
+    shop_id
+    user_id
+
+    private Long id;
+    private int num;
+    private Shop shop;
+    private User user;
+
+    -->
+
+    <insert id="saveByShopIdUserId">
+        insert into t_shop_car (num, shop_id, user_id) values (#{num}, #{shopId}, #{userId})
+    </insert>
+
+    <resultMap id="ShopCarResult" type="ShopCar">
+        <id property="id" column="id"/>
+        <result property="num" column="num"/>
+        <association property="shop" resultMap="ShopResult"/>
+    </resultMap>
+
+    <!--
+    private Long id;
+    private String  name;
+    //售价
+    private BigDecimal selling_price;
+
+    //进价
+    private BigDecimal price;
+    //商品规格
+    private String  info;
+    //介绍
+    private String intro;
+    private String img;
+    //店铺
+    private String store;
+    //库存数量
+    private int stockNum;
+    //是否特价
+    private boolean discount;
+    //特价
+    private BigDecimal discountPrice;
+
+    private Category category;
+    //上架状态
+    private boolean stat;
+
+    private String tags;
+    //销量
+    private long salesVolume;
+    //浏览量
+    private long visitVolume;    -->
+
+    <resultMap id="ShopResult" type="Shop">
+        <id property="id" column="sid"/>
+        <result property="name" column="name"/>
+        <result property="selling_price" column="selling_price"/>
+        <result property="price" column="price"/>
+        <result property="info" column="info"/>
+        <result property="intro" column="intro"/>
+        <result property="img" column="img"/>
+        <result property="store" column="store"/>
+        <result property="stockNum" column="stock_num"/>
+        <result property="discount" column="discount"/>
+        <result property="discountPrice" column="discount_price"/>
+        <result property="category.id" column="category_id"/>
+        <result property="stat" column="stat"/>
+        <result property="tags" column="tags"/>
+        <result property="salesVolume" column="sales_volume"/>
+        <result property="visitVolume" column="visit_volume"/>
+    </resultMap>
+
+    <select id="findByUserId" resultMap="ShopCarResult">
+        select
+            c.id, c.num,
+            s.id sid, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
+            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from t_shop_car c
+        left join
+            t_shop s
+        on c.shop_id = s.id
+        where c.user_id = #{id}
+        order by c.id desc
+    </select>
+
+    <!--<select id="findShopCarNumById" resultMap="java.lang.Integer">
+        select num
+        from t_shop_car
+        where id = #{id}
+    </select>-->
+
+    <select id="findByUserIdShopId" resultType="com.briup.bean.ShopCar">
+        select id, num
+        from t_shop_car
+        where user_id = #{userId} and shop_id = #{shopId}
+    </select>
+
+    <update id="updateShopCar">
+        update t_shop_car set num = #{num} where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from t_shop_car where id = #{id}
+    </delete>
+
+
+</mapper>

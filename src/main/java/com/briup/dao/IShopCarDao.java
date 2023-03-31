@@ -6,14 +6,19 @@ import java.util.List;
 public interface IShopCarDao{
 	ShopCar findByShopIdAndUserId(long shopId,long userId);
 
-	void updateShopcar(int num,long id);
+	void updateShopCar(long id, int num);
 
 	List<ShopCar> findByUserId(long id);
 
 	void deleteById(long id);
 
-	void saveByshopIdUserId(int num,long shopId,long userId);
+	void saveByShopIdUserId(int num, long userId, long shopId);
 
 	List<ShopCar> findShopCarByIds(List<Long> list);
+	// 查单个购物车
+	//Integer findShopNumCarById(long id);
+
 	void deleteShopCarByIds(List<Long> list);
+
+	ShopCar findByUserIdShopId(Long userId, Long shopId);
 }

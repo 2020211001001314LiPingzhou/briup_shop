@@ -17,7 +17,8 @@ public class IShopServiceImpl implements IShopService {
 
     @Override
     public List<Shop> findAllShops() {
-        return null;
+        // 通过访问量来简单实现发现好物
+        return shopDao.findAllShopByVisitVolumeDesc();
     }
 
     @Override
@@ -27,12 +28,13 @@ public class IShopServiceImpl implements IShopService {
 
     @Override
     public List<Shop> findDiscount() {
-        return null;
+        return shopDao.findByDiscountOrderBySalesVolumeDesc(true);
     }
 
     @Override
     public List<Shop> recommendShop(Long userId) {
-        return null;
+        // 暂时通过访问量来简单模拟推荐
+        return shopDao.findAllShopByVisitVolumeDesc();
     }
 
     @Override

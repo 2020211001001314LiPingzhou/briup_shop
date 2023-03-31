@@ -3,7 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.briup.dao.IShopDao">
-    <select id="findByCategoryId" resultType="Shop">
+    <resultMap id="ShopResult" type="Shop">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="selling_price" column="selling_price"/>
+        <result property="price" column="price"/>
+        <result property="info" column="info"/>
+        <result property="intro" column="intro"/>
+        <result property="img" column="img"/>
+        <result property="store" column="store"/>
+        <result property="stockNum" column="stock_num"/>
+        <result property="discount" column="discount"/>
+        <result property="discountPrice" column="discount_price"/>
+        <result property="category.id" column="category_id"/>
+        <result property="stat" column="stat"/>
+        <result property="tags" column="tags"/>
+        <result property="salesVolume" column="sales_volume"/>
+        <result property="visitVolume" column="visit_volume"/>
+    </resultMap>
+
+    <select id="findByCategoryId" resultMap="ShopResult">
         select
             s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
             s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
@@ -13,7 +32,7 @@
         where c.id = #{categoryId}
     </select>
 
-    <select id="findShopById" resultType="Shop">
+    <select id="findShopById" resultMap="ShopResult">
         select
             s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
             s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
@@ -21,7 +40,7 @@
         where s.id = #{id}
     </select>
 
-    <select id="findByNameContaining" resultType="Shop">
+    <select id="findByNameContaining" resultMap="ShopResult">
         select
             s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
             s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
@@ -29,5 +48,24 @@
         where s.name like concat('%', #{shopName}, '%')
     </select>
 
+    <select id="findByDiscountOrderBySalesVolumeDesc" resultMap="ShopResult">
+        select
+            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
+            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from
+            t_shop s
+        where s.discount = #{discount}
+        order by s.sales_volume desc
+    </select>
+
+    <select id="findAllShopByVisitVolumeDesc" resultMap="ShopResult">
+        select
+            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
+            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from
+            t_shop s
+        order by s.visit_volume desc
+        limit 12
+    </select>
 
 </mapper>

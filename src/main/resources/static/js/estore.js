@@ -123,7 +123,7 @@ function addShopCar(bookid,user) {
       }
     },
     error: function () {
-      alert("添加购物车失败")
+      alert("添加购物车失败，请先登录")
     },
   })
 

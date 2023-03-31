@@ -10,4 +10,6 @@ public interface IShopCarService {
     void deleteShopCar(Long id);
     void updateShopCar(Long id,int num);
     List<ShopCar> findShopCars(Long[] ids);
+
+    //Integer findShopCarNumById(Long id);
 }

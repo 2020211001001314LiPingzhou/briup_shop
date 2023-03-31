@@ -16,8 +16,8 @@
 </a>
 <div class="top" id="top">
     <div class="herf" th:if="${session.user} ==null">
-        <span><a th:href="toLogin" href="login.html">登录</a></span>
-        <span><a th:href="toRegister" href="register.html">注册</a></span>
+        <span><a th:href="'user/toLogin'" href="login.html">登录</a></span>
+        <span><a th:href="'user/toRegister'" href="register.html">注册</a></span>
     </div>
     <div class="herf" th:if="${session.user} !=null">
         <span><a href="index.html" th:href="toIndex">首页</a></span>
