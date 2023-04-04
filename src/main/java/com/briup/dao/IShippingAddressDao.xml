@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.dao.IShippingAddressDao">
+
+    <!--
+        id
+        address
+        phone_num
+        user_id
+        default_value
+        name
+
+        private Long id;
+        private String name;
+        private String address;
+        private String phoneNum;
+        private boolean defaultValue;
+        private User user;
+    -->
+    <select id="findByUserId" resultType="com.briup.bean.ShippingAddress">
+        select id, name, address, phone_num phoneNum, default_value defaultValue
+        from t_shipping_address
+        where user_id = #{userId}
+    </select>
+</mapper>

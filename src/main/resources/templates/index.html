@@ -25,8 +25,8 @@
     </div>
     <div class="herf" th:if="${session.user} !=null">
         <span>欢迎<a th:text="${session.user.loginName}" style="color: red;">李四</a></span>
-        <span><a href="/user/toOrder">我的订单</a></span>
-        <span><a href="/user/toCollect">我的收藏</a></span>
+        <span><a href="toOrder">我的订单</a></span>
+        <span><a href="toCollect">我的收藏</a></span>
         <span><a href="/user/exit">退出</a></span>
     </div>
 </div>

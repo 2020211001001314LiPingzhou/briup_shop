@@ -15,12 +15,16 @@
 		<button class="btn btn-top"><span class="glyphicon glyphicon-chevron-up"></span></button>
 	</a>
 	<div class="top" id="top">
-		<div class="herf">
-			<span ><a href="index.html">首页</a></span>
-			<span ><a>登录</a></span>
-			<span ><a>注册</a></span>
-			<span ><a>我的订单</a></span>
-			<span ><a>退出</a></span>
+		<div class="herf" th:if="${session.user} ==null">
+			<span><a th:href="'user/toLogin'" href="login.html">登录</a></span>
+			<span><a th:href="'user/toRegister'" href="register.html">注册</a></span>
+		</div>
+		<div class="herf" th:if="${session.user} !=null">
+			<span><a href="index.html" th:href="toIndex">首页</a></span>
+			<span>欢迎<a th:text="${session.user.loginName}" style="color: red;">李四</a></span>
+
+			<span><a href="collect.html" th:href="toCollect">我的收藏</a></span>
+			<span><a href="login.html" th:href="exit">退出</a></span>
 		</div>
 	</div>
 	
@@ -45,7 +49,7 @@
 		<div class="body">
 			<div class="orderSure row">
 				<h2 class="column col-md-10">您的订单已经支付成功，我们将在24小时内为您安排发货！！</h2>
-				<a class="col-md-2 column" style="padding: 30px ;color: var(--color) !important" href="index.html">
+				<a class="col-md-2 column" style="padding: 30px ;color: var(--color) !important" th:href="toIndex" href="index.html">
 					<span class=" glyphicon glyphicon-chevron-right "></span>继续购物
 				</a>
 			</div>

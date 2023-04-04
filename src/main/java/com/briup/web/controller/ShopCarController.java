@@ -1,23 +1,30 @@
 package com.briup.web.controller;
 
+import com.briup.bean.ShippingAddress;
 import com.briup.bean.ShopCar;
 import com.briup.bean.User;
+import com.briup.service.IShippingAddressService;
 import com.briup.service.IShopCarService;
+import com.briup.until.ShopCarUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
 public class ShopCarController {
 
     @Autowired
     private IShopCarService shopCarService;
+
+    @Autowired
+    private IShippingAddressService shippingAddressService;
 
     @GetMapping("/addShopCar")
     @ResponseBody
@@ -56,4 +63,36 @@ public class ShopCarController {
     public void delShopCar(Long shopCarId){
         shopCarService.deleteShopCar(shopCarId);
     }
+
+    @GetMapping("/advanceOrder")
+    public String advanceOrder(Long[] ids, Model model, HttpSession session){
+        // 查询要下单商品的信息
+        List<ShopCar> shopCarList = shopCarService.findShopCars(ids);
+        // 计算总价
+        /*AtomicReference<BigDecimal> sumPrice = new AtomicReference<>(new BigDecimal(0));
+        shopCarList.forEach(shopCar -> {
+            if (shopCar.getShop().isDiscount()){
+                sumPrice.set(sumPrice.get().add(shopCar.getShop().getDiscountPrice()
+                        .multiply(new BigDecimal(shopCar.getNum()))));
+            }else {
+                sumPrice.set(sumPrice.get().add(shopCar.getShop().getSelling_price()
+                        .multiply(new BigDecimal(shopCar.getNum()))));
+            }
+        });
+        */
+        // 将上述代码封装到ShopCarUntil类中
+        BigDecimal sumPrice = ShopCarUntil.sumPrice(shopCarList);
+
+        // 查询用户收件地址
+        List<ShippingAddress> userAddressList
+                = shippingAddressService.findUserAllShippingAddress(((User)session.getAttribute("user")).getId());
+
+        model.addAttribute("shopCarList", shopCarList);
+        model.addAttribute("sumPrice", sumPrice);
+        model.addAttribute("userAddressList", userAddressList);
+        //System.out.println("shopCarList ======" + shopCarList);
+        //System.out.println("sumPrice ======" + sumPrice);
+        return "confirm";
+    }
+
 }

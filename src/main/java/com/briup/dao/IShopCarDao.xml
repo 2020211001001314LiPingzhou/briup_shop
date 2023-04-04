@@ -110,5 +110,20 @@
         delete from t_shop_car where id = #{id}
     </delete>
 
+    <select id="findShopCarByIds" resultMap="ShopCarResult">
+        select
+            c.id, c.num,
+            s.id sid, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
+            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from t_shop_car c
+        left join
+             t_shop s
+             on c.shop_id = s.id
+        where c.id in
+              <foreach collection="list" open="(" close=")" separator="," item="id">
+                #{id}
+              </foreach>
+    </select>
+
 
 </mapper>

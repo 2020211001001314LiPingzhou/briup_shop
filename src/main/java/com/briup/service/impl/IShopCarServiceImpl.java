@@ -1,11 +1,15 @@
-package com.briup.service;
+package com.briup.service.impl;
 
 import com.briup.bean.Shop;
 import com.briup.bean.ShopCar;
 import com.briup.dao.IShopCarDao;
+import com.briup.service.IShopCarService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -45,7 +49,9 @@ public class IShopCarServiceImpl implements IShopCarService {
 
     @Override
     public List<ShopCar> findShopCars(Long[] ids) {
-        return null;
+        List<Long> list = Arrays.asList(ids);
+        //System.out.println("list ==== " + list);
+        return shopCarDao.findShopCarByIds(list);
     }
 
 

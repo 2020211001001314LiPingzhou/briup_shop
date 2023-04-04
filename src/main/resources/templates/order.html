@@ -19,8 +19,8 @@
 </a>
 <div class="top" id="top">
     <div class="herf" th:if="${session.user} ==null">
-        <span><a th:href="toLogin" href="login.html">登录</a></span>
-        <span><a th:href="toRegister" href="register.html">注册</a></span>
+        <span><a th:href="'user/toLogin'" href="login.html">登录</a></span>
+        <span><a th:href="'user/toRegister'" href="register.html">注册</a></span>
     </div>
     <div class="herf" th:if="${session.user} !=null">
         <span><a href="index.html" th:href="toIndex">首页</a></span>
@@ -120,9 +120,11 @@
                         </span>
                         <span>
                                    <a th:if="${orders.status==1}" th:href="${'toPayOrder?orderId='+orders.id}" ><button class="btn btn-success btn-sm" ><i
-                                           class="glyphicon glyphicon-credit-card"></i></button></a>
+                                           class="glyphicon glyphicon-credit-card">支付</i></button></a>
+                                   <a th:href="${'deleteOrder?orderId='+orders.id}">
                                     <button class="btn btn-danger btn-sm"><i
-                                            class="glyphicon glyphicon-trash"></i></button></span>
+                                            class="glyphicon glyphicon-trash">删除</i></button></a>
+                        </span>
 
                     </div>
                 </td>

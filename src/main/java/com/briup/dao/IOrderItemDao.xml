@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.dao.IOrderItemDao">
+
+    <!--
+    id
+    num
+    order_id
+    shop_id
+
+    private Long id;
+    private Shop shop;
+    private int num;
+    private Order order;
+    -->
+    <insert id="saveOrderItem">
+        insert into t_order_item(num, order_id, shop_id)
+        values (#{num}, #{order.id}, #{shop.id})
+    </insert>
+</mapper>

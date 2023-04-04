@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.dao.IOrderDao">
+
+    <!--
+    id
+    shipping_address_id
+    user_id
+    create_date
+    shop_num
+    sum_price
+    status
+
+    private String id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:SS")
+    private Date createDate;
+
+    private int shopNum;
+    private BigDecimal sumPrice;
+    private int status;
+    private User user;
+    private ShippingAddress shippingAddress;
+    private List<OrderItem> orderItems;
+    -->
+    <insert id="saveOrder" >
+        insert into t_order(id, shipping_address_id, user_id, create_date, shop_num, sum_price, status)
+        values (#{id}, #{shippingAddress.id}, #{user.id}, #{createDate},
+                #{shopNum}, #{sumPrice}, #{status})
+    </insert>
+
+    <resultMap id="OrderResult" type="com.briup.bean.Order">
+        <id property="id" column="id"/>
+        <result property="createDate" column="create_date"/>
+        <result property="shopNum" column="shop_num"/>
+        <result property="sumPrice" column="sum_price"/>
+        <result property="status" column="status"/>
+        <result property="user.id" column="user_id"/>
+        <association property="shippingAddress" resultMap="ShippingAddressResult"/>
+        <collection property="orderItems" resultMap="OrderItemResult"/>
+    </resultMap>
+
+    <resultMap id="ShippingAddressResult" type="com.briup.bean.ShippingAddress">
+        <id property="id" column="shipping_address_id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+        <result property="phoneNum" column="phone_num"/>
+        <result property="defaultValue" column="default_value"/>
+    </resultMap>
+
+    <resultMap id="OrderItemResult" type="com.briup.bean.OrderItem">
+        <id property="id" column="iid"/>
+        <result property="num" column="num"/>
+        <association property="shop" resultMap="ShopResult"/>
+    </resultMap>
+
+    <resultMap id="ShopResult" type="com.briup.bean.Shop">
+        <id property="id" column="shop_id"/>
+        <result property="name" column="sname"/>
+        <result property="selling_price" column="selling_price"/>
+        <result property="price" column="price"/>
+        <result property="info" column="info"/>
+        <result property="intro" column="intro"/>
+        <result property="img" column="img"/>
+        <result property="store" column="store"/>
+        <result property="stockNum" column="stock_num"/>
+        <result property="discount" column="discount"/>
+        <result property="discountPrice" column="discount_price"/>
+        <result property="category.id" column="category_id"/>
+        <result property="stat" column="stat"/>
+        <result property="tags" column="tags"/>
+        <result property="salesVolume" column="sales_volume"/>
+        <result property="visitVolume" column="visit_volume"/>
+    </resultMap>
+
+    <select id="findByUserId" resultMap="OrderResult">
+        select o.id, o.shipping_address_id, o.user_id, o.create_date, o.shop_num, o.sum_price, o.status,
+               i.id iid, i.num, i.shop_id,
+               a.address, a.phone_num, a.default_value, a.name,
+               s.discount, s.discount_price, s.img, s.info, s.name sname, s.price,
+               s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from t_order o, t_order_item i, t_shipping_address a, t_shop s
+        where a.id = o.shipping_address_id and o.id = i.order_id and i.shop_id = s.id
+        order by o.create_date desc
+    </select>
+
+    <select id="findOrderByOrderId" resultMap="OrderResult">
+        select o.id, o.shipping_address_id, o.user_id, o.create_date, o.shop_num, o.sum_price, o.status,
+               i.id iid, i.num, i.shop_id,
+               a.address, a.phone_num, a.default_value, a.name,
+               s.discount, s.discount_price, s.img, s.info, s.name sname, s.price,
+               s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+        from t_order o, t_order_item i, t_shipping_address a, t_shop s
+        where a.id = o.shipping_address_id and o.id = i.order_id and i.shop_id = s.id
+                and o.id = #{order_id}
+    </select>
+
+    <update id="updateOrder">
+        update t_order set status = #{status} where id = #{id}
+    </update>
+</mapper>

@@ -14,6 +14,7 @@ public interface IShopCarDao{
 
 	void saveByShopIdUserId(int num, long userId, long shopId);
 
+	// 参数是一个list，要使用到循环标签了
 	List<ShopCar> findShopCarByIds(List<Long> list);
 	// 查单个购物车
 	//Integer findShopNumCarById(long id);

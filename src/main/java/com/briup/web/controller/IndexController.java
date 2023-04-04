@@ -25,7 +25,7 @@ public class IndexController {
     @GetMapping(value = {"/","/index","toIndex"})
     public String toIndex(HttpSession session){
         ServletContext application = session.getServletContext();
-        // 这块后面考虑放入redis中
+        // 这块后面考虑放入redis中，或者简单点放入ServletContext中，配置一个Listener监听器，在tomcat启动值就将这个数据加载到ServletContext中
         // 分类商品
         List<CategoryVO> categories = categoryService.findAllCategory();
         // 特价商品

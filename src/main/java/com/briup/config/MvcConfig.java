@@ -12,7 +12,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
-    @Override
+    /*@Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .excludePathPatterns(
@@ -31,5 +31,5 @@ public class MvcConfig implements WebMvcConfigurer {
                         "/searchShop",
                         "/toViewShop"
                 );
-    }
+    }*/
 }
