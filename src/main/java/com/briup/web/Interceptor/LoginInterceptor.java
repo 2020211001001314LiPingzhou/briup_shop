@@ -21,9 +21,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         // 3.判断用户是否存在
         if (user == null) {
             // 返回401状态码
-            response.setStatus(401);
+            //response.setStatus(401);
             //response.sendRedirect(request.getContextPath() + "/user/toLogin");
             //System.out.println(request.getContextPath() + "/user/toLogin");
+            request.setAttribute("msg", "还未登录，请先登录");
+            request.getRequestDispatcher("toLogin").forward(request, response);
             return false;
         }
         // 4.放行

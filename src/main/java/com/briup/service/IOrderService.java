@@ -16,4 +16,6 @@ public interface IOrderService {
     Order findById(String orderId);
 
     String orderPay(Order order);
+
+    void deleteOrder(String orderId, Long userId);
 }

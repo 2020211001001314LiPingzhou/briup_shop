@@ -11,7 +11,7 @@ public interface ICollectService {
 
     void addCollect(User user, Long shopId);
 
-    boolean findCollect(Long id, Long shopId);
+    boolean findCollect(Long userId, Long shopId);
 
     Collect findOne(Long collectId);
 }

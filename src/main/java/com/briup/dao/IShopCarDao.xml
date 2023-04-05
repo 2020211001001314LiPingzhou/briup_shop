@@ -125,5 +125,13 @@
               </foreach>
     </select>
 
+    <delete id="deleteShopCarByIds">
+        delete from t_shop_car
+        where id in
+              <foreach collection="list" open="(" close=")" separator="," item="id">
+                #{id}
+              </foreach>
+    </delete>
+
 
 </mapper>

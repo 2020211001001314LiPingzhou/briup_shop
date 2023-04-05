@@ -23,7 +23,10 @@ public class IShopServiceImpl implements IShopService {
 
     @Override
     public Shop findShopById(Long id) {
-        return shopDao.findShopById(id);
+        Shop shop = shopDao.findShopById(id);
+        // 更新商品的访问量
+        shopDao.updateVisitVolume(id, shop.getVisitVolume()+1);
+        return shop;
     }
 
     @Override

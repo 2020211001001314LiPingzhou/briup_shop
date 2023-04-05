@@ -8,4 +8,6 @@ public interface IOrderDao {
 	void saveOrder(Order order);
 	Order findOrderByOrderId(String order_id);
 	void updateOrder(Order order);
+
+	void deleteOrder(String orderId);
 }

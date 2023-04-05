@@ -68,6 +68,9 @@ public class IOrderServiceImpl implements IOrderService {
             orderItemDao.saveOrderItem(orderItem);
         });
 
+        // 将购物车中相应的商品记录删除
+        shopCarDao.deleteShopCarByIds(shopCarIdList);
+
         // 插入成功返回Order
         return order;
     }
@@ -93,6 +96,28 @@ public class IOrderServiceImpl implements IOrderService {
         String pay = aliPayUtil.pay(aliPay);
         System.out.println("pay:" + pay);
         return pay;
+    }
+
+
+    @Override
+    @Transactional
+    public void deleteOrder(String orderId, Long userId) {
+        // 查询order
+        Order order = orderDao.findOrderByOrderId(orderId);
+        // 判断订单是否存在
+        if (order == null || order.getId() == null) {
+            return;
+        }
+        // 判断order是否为该用户的order
+        if (!userId.equals(order.getUser().getId())) {
+            return;
+        }
+
+        // 删除orderItem
+        List<OrderItem> orderItems = order.getOrderItems();
+        orderItemDao.deleteOrderItem(orderItems);
+        // 删除order
+        orderDao.deleteOrder(orderId);
     }
 }
 

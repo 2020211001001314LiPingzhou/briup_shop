@@ -151,4 +151,12 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/deleteOrder")
+    public String deleteOrder(String orderId, HttpSession session){
+        Long userId = ((User) session.getAttribute("user")).getId();
+        orderService.deleteOrder(orderId, userId);
+        // 因为前端发的不是ajax请求，所以直接重定向到/toOrder，重新查order数据并跳转到order.html
+        return "redirect:/toOrder";
+    }
+
 }

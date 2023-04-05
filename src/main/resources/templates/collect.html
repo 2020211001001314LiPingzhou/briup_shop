@@ -85,7 +85,7 @@
                 <td th:text="${collect.shop.selling_price}" th:if="${!collect.shop.discount}">1</td>
                 <td><img src="images/shop/no-img.png" th:src="${collect.shop.img}"></td>
                 <td>
-                    <button class="btn btn-warning" onclick="" th:onclick="'delCollect('+${collect.id}+')'">取消收藏
+                    <button class="btn btn-warning" onclick="" th:onclick="'delCollect('+${collect.id}+','+${collect.shop.id}+')'">取消收藏
                     </button>
                 </td>
             </tbody>
@@ -127,13 +127,13 @@
 </body>
 </html>
 <script type="text/javascript">
-    function  delCollect(collectId){
+    function  delCollect(collectId, shopId){
         var tr =$('#'+collectId);
 
         console.log(tr)
         $.ajax({
             type: 'get',
-            url: 'delCollect?collectId=' + collectId,
+            url: 'delCollect?shopId=' + shopId,
             success: function () {
                 tr.hide()
                 alert("取消收藏成功")

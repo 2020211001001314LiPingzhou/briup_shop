@@ -19,4 +19,13 @@
         insert into t_order_item(num, order_id, shop_id)
         values (#{num}, #{order.id}, #{shop.id})
     </insert>
+
+    <delete id="deleteOrderItem">
+        delete from t_order_item
+        where id
+        in
+            <foreach collection="list" separator="," open="(" close=")" item="item">
+                #{item.id}
+            </foreach>
+    </delete>
 </mapper>

@@ -68,4 +68,8 @@
         limit 12
     </select>
 
+    <update id="updateVisitVolume">
+        update t_shop set visit_volume = #{visitVolume} where id = #{shopId}
+    </update>
+
 </mapper>

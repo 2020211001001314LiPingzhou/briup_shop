@@ -16,16 +16,16 @@ import java.util.List;
 
 @Controller
 public class IndexController {
-    @Autowired
+    /*@Autowired
     private ICategoryService categoryService;
 
     @Autowired
-    private IShopService shopService;
+    private IShopService shopService;*/
 
     @GetMapping(value = {"/","/index","toIndex"})
     public String toIndex(HttpSession session){
-        ServletContext application = session.getServletContext();
-        // 这块后面考虑放入redis中，或者简单点放入ServletContext中，配置一个Listener监听器，在tomcat启动值就将这个数据加载到ServletContext中
+        /*ServletContext application = session.getServletContext();
+        // 这块后面考虑放入redis中，或者简单点放入ServletContext中，配置一个Listener监听器，在tomcat启动值就将这些数据加载到ServletContext中
         // 分类商品
         List<CategoryVO> categories = categoryService.findAllCategory();
         // 特价商品
@@ -35,7 +35,7 @@ public class IndexController {
 
         application.setAttribute("categories", categories);
         application.setAttribute("discountList", discountList);
-        application.setAttribute("shops", shops);
+        application.setAttribute("shops", shops);*/
         return "index";
     }
 
