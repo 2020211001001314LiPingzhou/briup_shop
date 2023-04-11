@@ -22,10 +22,14 @@
         <result property="visitVolume" column="visit_volume"/>
     </resultMap>
 
+    <sql id="ShopColumn">
+        s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
+            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+    </sql>
+
     <select id="findByCategoryId" resultMap="ShopResult">
         select
-            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
-            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+            <include refid="ShopColumn"/>
         from t_category c
         left join t_shop s
         on c.id = s.category_id
@@ -34,24 +38,21 @@
 
     <select id="findShopById" resultMap="ShopResult">
         select
-            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
-            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+            <include refid="ShopColumn"/>
         from t_shop s
         where s.id = #{id}
     </select>
 
     <select id="findByNameContaining" resultMap="ShopResult">
         select
-            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
-            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+            <include refid="ShopColumn"/>
         from t_shop s
         where s.name like concat('%', #{shopName}, '%')
     </select>
 
     <select id="findByDiscountOrderBySalesVolumeDesc" resultMap="ShopResult">
         select
-            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
-            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+            <include refid="ShopColumn"/>
         from
             t_shop s
         where s.discount = #{discount}
@@ -60,8 +61,7 @@
 
     <select id="findAllShopByVisitVolumeDesc" resultMap="ShopResult">
         select
-            s.id, s.discount, s.discount_price, s.img, s.info, s.name, s.price,
-            s.selling_price, s.stat, s.stock_num, s.store, s.category_id, s.sales_volume, s.visit_volume, s.intro, s.tags
+            <include refid="ShopColumn"/>
         from
             t_shop s
         order by s.visit_volume desc

@@ -33,9 +33,6 @@ public class IOrderServiceImpl implements IOrderService {
     @Resource
     private IOrderItemDao orderItemDao;
 
-    @Resource
-    private AliPayUtil aliPayUtil;
-
     @Override
     public List<Order> findUserAllOrders(Long userId) {
         return orderDao.findByUserId(userId);
@@ -76,8 +73,11 @@ public class IOrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void paySuccess(Order order) {
+    public Order paySuccess(String orderId) {
+        Order order = orderDao.findOrderByOrderId(orderId);
+        order.setStatus(2);
         orderDao.updateOrder(order);
+        return order;
     }
 
     @Override
@@ -85,18 +85,7 @@ public class IOrderServiceImpl implements IOrderService {
         return orderDao.findOrderByOrderId(orderId);
     }
 
-    @Override
-    public String orderPay(Order order) {
 
-        // 调用支付宝
-        AliPay aliPay = new AliPay();
-        aliPay.setOut_trade_no(order.getId());
-        aliPay.setSubject("充值:" + order.getSumPrice());
-        aliPay.setTotal_amount(order.getSumPrice().toString());
-        String pay = aliPayUtil.pay(aliPay);
-        System.out.println("pay:" + pay);
-        return pay;
-    }
 
 
     @Override

@@ -1,5 +1,6 @@
 package com.briup.web.controller;
 
+import com.alipay.api.domain.AlipayTradePagePayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.briup.bean.AliPay;
 import com.briup.bean.Order;
@@ -7,11 +8,14 @@ import com.briup.bean.User;
 import com.briup.config.AliPayConfig;
 import com.briup.service.IOrderService;
 import com.briup.service.IShopCarService;
+import com.briup.until.AliPayUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,10 +28,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 public class OrderController {
     @Autowired
     private IOrderService orderService;
+
+    @Autowired
+    private AliPayUtil aliPayUtil;
 
 
     /**
@@ -47,9 +55,13 @@ public class OrderController {
         Order order = orderService.saveOrder(ids, (User) session.getAttribute("user"), addressId);
         model.addAttribute("order", order);
 
-        //todo 这里是不是应该跳转到阿里支付页面
+        //跳转到阿里支付
+        if (order.getId() != null) {
+            return "forward:/payOrder";
+        }
 
-        return "confirmSuc";
+
+        return "forward:/toOrder";
     }
 
     @GetMapping("/toOrder")
@@ -59,18 +71,29 @@ public class OrderController {
         return "order";
     }
 
+
+    @GetMapping("/toPayOrder")
+    public String toPayOrder(String orderId, Model model) {
+        Order order = orderService.findById(orderId);
+        model.addAttribute("order", order);
+        return "forward:/payOrder";
+    }
+
     /**
      * 这里应该是先跳转到阿里的支付界面，
-     * 支付成功后跳转到orderSure.html
-     * 支付失败跳转回order.html
-     * @param orderId
+     * 支付成功后支付宝回调/goPaySuccPage更新订单状态，
+     * 最后跳转到confirmSuc.html
+     * @param
      * @return
      */
-    @GetMapping("/toPayOrder")
-    public void toPayOrder(String orderId, HttpServletResponse httpResponse) throws IOException {
-        Order order = orderService.findById(orderId);
-        System.out.println("order ----------->" + order);
-        String payResult = orderService.orderPay(order);
+    @GetMapping("/payOrder")
+    @ResponseBody
+    public void payOrder(HttpServletRequest request, HttpServletResponse httpResponse) throws IOException {
+        Order order = (Order) request.getAttribute("order");
+        // 成功后的跳转页面
+        String returnPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/goPaySuccPage?id=" + order.getId();
+        String payResult = aliPayUtil.pay(order, returnPath);
+
         httpResponse.setContentType("text/html;charset=UTF-8");
         httpResponse.getWriter().write(payResult);
         httpResponse.getWriter().flush();
@@ -82,8 +105,12 @@ public class OrderController {
      * @return
      */
     @GetMapping("/goPaySuccPage")
-    public String goPaySuccPage() {
-        return "orderSure";
+    public String goPaySuccPage(@RequestParam("id") String orderId, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        Order order = orderService.paySuccess(orderId);
+        model.addAttribute("order", order);
+        log.debug("user:" + user.getLoginName() + "订单支付成功");
+        return "confirmSuc";
     }
 
 
@@ -92,7 +119,7 @@ public class OrderController {
      *
      * @return
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping("/notifyPayResult")
     public String notifyPayResult(HttpServletRequest request) {
         System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<进入支付宝回调->>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -149,7 +176,7 @@ public class OrderController {
             System.err.println("-------------------->验签失败");
             return "failure";
         }
-    }
+    }*/
 
     @GetMapping("/deleteOrder")
     public String deleteOrder(String orderId, HttpSession session){

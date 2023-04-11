@@ -55,32 +55,4 @@ public class AliPayConfig {
         return new DefaultAlipayClient(serverURL,APP_ID,APP_PRIVATE_KEY,format,
                 CHARSET,ALIPAY_PUBLIC_KEY,signType);
     }
-
-    public static String getServerURL() {
-        return serverURL;
-    }
-
-    public static String getAppId() {
-        return APP_ID;
-    }
-
-    public static String getAppPrivateKey() {
-        return APP_PRIVATE_KEY;
-    }
-
-    public static String getFormat() {
-        return format;
-    }
-
-    public static String getCHARSET() {
-        return CHARSET;
-    }
-
-    public static String getAlipayPublicKey() {
-        return ALIPAY_PUBLIC_KEY;
-    }
-
-    public static String getSignType() {
-        return signType;
-    }
 }

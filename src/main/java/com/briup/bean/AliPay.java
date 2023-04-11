@@ -25,7 +25,7 @@ public class AliPay {
      */
     private String body;
     /**
-     * 超时时间参数
+     * 订单超时时间参数
      */
     private String timeout_express = "10m";
     /**

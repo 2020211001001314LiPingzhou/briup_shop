@@ -84,8 +84,15 @@ public class ShopCarController {
         BigDecimal sumPrice = ShopCarUntil.sumPrice(shopCarList);
 
         // 查询用户收件地址
+        // 不能直接从session的user里面拿userAddressList，因为当数据更新后：比如添加了新的地址，或更改了默认地址后，
+        // user里面的数据就与数据库中数据不匹配了，所以应该重新查询
+        //List<ShippingAddress> userAddressList = ((User) session.getAttribute("user")).getAddresses();
         List<ShippingAddress> userAddressList
                 = shippingAddressService.findUserAllShippingAddress(((User)session.getAttribute("user")).getId());
+        // 把默认地址排到最前面
+        if (userAddressList != null){
+            userAddressList.sort((x,y) -> (y.isDefaultValue() ? 1 : 0) - (x.isDefaultValue() ? 1 : 0));
+        }
 
         model.addAttribute("shopCarList", shopCarList);
         model.addAttribute("sumPrice", sumPrice);

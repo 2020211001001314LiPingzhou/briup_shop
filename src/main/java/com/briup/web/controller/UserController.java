@@ -44,7 +44,7 @@ public class UserController {
             model.addAttribute("msg", e.getMessage());
             return "register";
         }
-        return "redirect:/usr/toLogin";
+        return "redirect:/user/toLogin";
     }
 
     @GetMapping("/toLogin")

@@ -24,4 +24,28 @@
         from t_shipping_address
         where user_id = #{userId}
     </select>
+
+    <insert id="saveShippingAddress">
+        insert into t_shipping_address(address, phone_num, user_id, default_value, name)
+        values (#{address}, #{phoneNum}, #{user.id}, #{defaultValue}, #{name})
+    </insert>
+
+    <delete id="delShippingAddress">
+        delete from t_shipping_address where id = #{shippingAddressId} and user_id = #{userId}
+    </delete>
+
+    <select id="findByUserIdDefaultValue" resultType="com.briup.bean.ShippingAddress">
+        select id, name, address, phone_num phoneNum, default_value defaultValue
+        from t_shipping_address
+        where user_id = #{userId} and default_value = #{defaultValue}
+    </select>
+
+    <update id="updateDefaultValue">
+        update t_shipping_address set default_value = #{newDefaultValue}
+        where
+        <if test="shippingAddressId != null and shippingAddressId != ''">
+          id = #{shippingAddressId} and
+        </if>
+          default_value = #{oldDefaultValue} and user_id = #{userId}
+    </update>
 </mapper>

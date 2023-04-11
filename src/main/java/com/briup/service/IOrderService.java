@@ -11,11 +11,9 @@ public interface IOrderService {
     List<Order> findUserAllOrders(Long userId);
     Order saveOrder(Long[] shopCarIds, User user, Long addressId);
 
-    void paySuccess(Order order);
+    Order paySuccess(String orderId);
 
     Order findById(String orderId);
-
-    String orderPay(Order order);
 
     void deleteOrder(String orderId, Long userId);
 }
