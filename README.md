@@ -243,3 +243,5 @@ shopCarList.forEach(shopCar -> {
 //List<ShippingAddress> userAddressList = ((User) session.getAttribute("user")).getAddresses();
 List<ShippingAddress> userAddressList = shippingAddressService.findUserAllShippingAddress(((User)session.getAttribute("user")).getId());
 ```
+
+4. 前端comfirm.html页面有个bug，有两个input标签id重复了，都为id="shippingAddresss"，应该删除一个。
